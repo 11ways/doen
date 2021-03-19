@@ -1,0 +1,56 @@
+# IDE files
+*.komodo*
+*.sublime*
+.idea/
+
+## OS specific files
+.DS_Store
+.DS_Store?
+.fuse*
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Log files
+npm-debug.log
+v8.log
+*.cpuprofile
+callgrind*
+*.wtf-trace
+deoptigate/
+*.0x/
+
+# Ignore report files
+plato/
+
+# Dependencies
+node_modules/
+vendor/
+
+# Coverage directories
+coverage/
+
+# PHPUnit cache files
+.phpunit.result.cache
+
+# Coveralls contains private info
+.coveralls.yml
+
+# This can contain the private token
+# (This is NOT .codecov.yml)
+codecov.yml
+
+# Locks
+package-lock.json
+npm-shrinkwrap.json
+yarn.lock
+composer.lock
+
+# Others
+*.bin
+
+# Ignore test files
+scratch*
+log.json
