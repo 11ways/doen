@@ -2,19 +2,14 @@
   <b>elevenways/doen</b>
 </h1>
 <div align="center">
-  <!-- CI - TravisCI -->
-  <a href="https://travis-ci.org/11ways/doen">
-    <img src="https://travis-ci.org/11ways/doen.svg?branch=master" alt="Mac/Linux Build Status" />
+  <!-- Github Actions -->
+  <a href="https://github.com/11ways/doen/actions">
+    <img src="https://github.com/11ways/doen/actions/workflows/php.yml/badge.svg" alt="Build Status" />
   </a>
 
   <!-- Coverage - Codecov -->
   <a href="https://codecov.io/gh/11ways/doen">
     <img src="https://img.shields.io/codecov/c/github/11ways/doen/master.svg" alt="Codecov Coverage report" />
-  </a>
-
-  <!-- DM - Snyk -->
-  <a href="https://snyk.io/test/github/11ways/doen?targetFile=package.json">
-    <img src="https://snyk.io/test/github/11ways/doen/badge.svg?targetFile=package.json" alt="Known Vulnerabilities" />
   </a>
 
   <!-- DM - David -->
@@ -26,7 +21,7 @@
 <div align="center">
   <!-- Version - npm -->
   <a href="https://packagist.org/packages/elevenways/doen">
-    <img src="https://img.shields.io/packagist/php-v/elevenways/doen.svg" alt="Latest version on npm" />
+    <img src="https://img.shields.io/packagist/php-v/elevenways/doen.svg" alt="Latest version on Packagist" />
   </a>
 
   <!-- License - MIT -->
