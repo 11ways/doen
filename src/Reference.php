@@ -6,6 +6,7 @@ class Reference implements \React\Promise\PromiseInterface {
 
 	private $bridge;
 	private $id;
+	private $monkey_patches = [];
 
 	/**
 	 * Evaluate some code and return a reference
@@ -28,8 +29,8 @@ class Reference implements \React\Promise\PromiseInterface {
 	 * and returns a reference
 	 *
 	 * @author   Jelle De Loecker   <jelle@elevenways.be>
-	 * @since    2021.03.19
-	 * @version  2021.03.19
+	 * @since    0.1.0
+	 * @version  0.1.0
 	 *
 	 * @param    string   $name
 	 * @param    array    $arguments
@@ -37,6 +38,11 @@ class Reference implements \React\Promise\PromiseInterface {
 	 * @return   Elevenways\Doen\Reference
 	 */
 	public function __call($name, $arguments) {
+
+		if (isset($this->monkey_patches[$name])) {
+			return $this->monkey_patches[$name](...$arguments);
+		}
+
 		return $this->bridge->callRefMethod($this->id, $name, $arguments);
 	}
 
@@ -45,8 +51,8 @@ class Reference implements \React\Promise\PromiseInterface {
 	 * WITH the value of the reference.
 	 *
 	 * @author   Jelle De Loecker   <jelle@elevenways.be>
-	 * @since    2021.03.19
-	 * @version  2021.03.19
+	 * @since    0.1.0
+	 * @version  0.1.0
 	 *
 	 * @param    callable|null   $on_fulfilled
 	 * @param    callable|null   $on_rejected
@@ -73,8 +79,8 @@ class Reference implements \React\Promise\PromiseInterface {
 	 * In the end, we can use `getValue()` to get the actual value
 	 *
 	 * @author   Jelle De Loecker   <jelle@elevenways.be>
-	 * @since    2021.03.19
-	 * @version  2021.03.19
+	 * @since    0.1.0
+	 * @version  0.1.0
 	 *
 	 * @param    callable|null   $on_fulfilled
 	 * @param    callable|null   $on_rejected
@@ -89,8 +95,8 @@ class Reference implements \React\Promise\PromiseInterface {
 	 * Wait for this reference to resolve
 	 *
 	 * @author   Jelle De Loecker   <jelle@elevenways.be>
-	 * @since    2021.03.19
-	 * @version  2021.03.19
+	 * @since    0.1.0
+	 * @version  0.1.0
 	 *
 	 * @param    callable|null   $on_fulfilled
 	 * @param    callable|null   $on_rejected
@@ -108,11 +114,35 @@ class Reference implements \React\Promise\PromiseInterface {
 	}
 
 	/**
+	 * Attach a new method to this reference
+	 *
+	 * @author   Jelle De Loecker   <jelle@elevenways.be>
+	 * @since    0.1.1
+	 * @version  0.1.1
+	 *
+	 * @param    string     $name
+	 * @param    \Closure   $fnc
+	 */
+	public function __monkeyPatch(string $name, \Closure $fnc) {
+
+		if (!$fnc) {
+			unset($this->monkey_patches[$name]);
+			return;
+		}
+
+		// Bind the function to this instance (so $this will work)
+		$fnc = $fnc->bindTo($this);
+
+		// Register it
+		$this->monkey_patches[$name] = $fnc;
+	}
+
+	/**
 	 * Get the id of this reference
 	 *
 	 * @author   Jelle De Loecker   <jelle@elevenways.be>
-	 * @since    2021.03.19
-	 * @version  2021.03.19
+	 * @since    0.1.0
+	 * @version  0.1.0
 	 *
 	 * @return   integer
 	 */
@@ -124,8 +154,8 @@ class Reference implements \React\Promise\PromiseInterface {
 	 * Inform JavaScript it can remove the value this references
 	 *
 	 * @author   Jelle De Loecker   <jelle@elevenways.be>
-	 * @since    2021.03.19
-	 * @version  2021.03.19
+	 * @since    0.1.0
+	 * @version  0.1.0
 	 */
 	public function __destruct() {
 		$this->bridge->destroyRef($this->id);
