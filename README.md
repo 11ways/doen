@@ -12,14 +12,7 @@
     <img src="https://img.shields.io/codecov/c/github/11ways/doen/master.svg" alt="Codecov Coverage report" />
   </a>
 
-  <!-- DM - David -->
-  <a href="https://david-dm.org/11ways/doen">
-    <img src="https://david-dm.org/11ways/doen/status.svg" alt="Dependency Status" />
-  </a>
-</div>
-
-<div align="center">
-  <!-- Version - npm -->
+  <!-- Version - packagist -->
   <a href="https://packagist.org/packages/elevenways/doen">
     <img src="https://img.shields.io/packagist/php-v/elevenways/doen.svg" alt="Latest version on Packagist" />
   </a>
