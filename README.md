@@ -25,7 +25,7 @@
 
 <div align="center">
   <!-- Version - npm -->
-  <a href="https://www.npmjs.com/package/protoblast">
+  <a href="https://packagist.org/packages/elevenways/doen">
     <img src="https://img.shields.io/packagist/php-v/elevenways/doen.svg" alt="Latest version on npm" />
   </a>
 
@@ -178,7 +178,7 @@ Please check the [contributing guidelines](.github/contributing.md) for more det
 ## Authors
 - **Jelle De Loecker** -  *Follow* me on *Github* ([:octocat:@skerit](https://github.com/skerit)) and on  *Twitter* ([🐦@skeriten](http://twitter.com/intent/user?screen_name=skeriten))
 
-See also the list of [contributors](https://github.com/skerit/node-skeleton/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/11ways/doen/contributors) who participated in this project.
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/skerit/node-skeleton/LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/11ways/doen/LICENSE) file for details.
