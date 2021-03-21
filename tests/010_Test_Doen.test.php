@@ -108,6 +108,22 @@ class Test_Doen extends DoenTestCase {
 		$this->assertSame(false, $result);
 	}
 
+	public function test_references_as_arguments() {
+
+		$doen = $this->getDoenInstance();
+
+		$number = $doen->evaluateToRef('1');
+		$str = $doen->evaluateToRef('"my string"');
+
+		$nr_type = $doen->evaluateFunction('arg => typeof arg', [$number]);
+		$result = $this->waitForPromise($nr_type);
+		$this->assertSame('number', $result);
+
+		$upper = $doen->evaluateFunction('arg => arg.toUpperCase()', [$str]);
+		$result = $this->waitForPromise($upper);
+		$this->assertSame('MY STRING', $result);
+	}
+
 	public function test_function_variables() {
 
 		$doen = $this->getDoenInstance();

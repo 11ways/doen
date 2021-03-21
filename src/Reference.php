@@ -2,7 +2,7 @@
 
 namespace Elevenways\Doen;
 
-class Reference implements \React\Promise\PromiseInterface {
+class Reference implements \React\Promise\PromiseInterface, \JsonSerializable {
 
 	private $bridge;
 	private $id;
@@ -44,6 +44,26 @@ class Reference implements \React\Promise\PromiseInterface {
 		}
 
 		return $this->bridge->callRefMethod($this->id, $name, $arguments);
+	}
+
+	/**
+	 * Returns data to use when being serialized by `json_encode()`
+	 *
+	 * @author   Jelle De Loecker   <jelle@elevenways.be>
+	 * @since    0.1.1
+	 * @version  0.1.1
+	 *
+	 * @return   array
+	 */
+	public function jsonSerialize() {
+
+		$result = [
+			'#'     => 'Doen',
+			'#type' => 'reference',
+			'#data' => $this->id,
+		];
+
+		return $result;
 	}
 
 	/**

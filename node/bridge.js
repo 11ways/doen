@@ -21,8 +21,8 @@ const rl = readline.createInterface({
  * Reviver function used when parsing JSON strings from PHP
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    2021.03.21
- * @version  2021.03.21
+ * @since    0.1.1
+ * @version  0.1.1
  *
  * @param    {String}   key
  * @param    {*}        value
@@ -39,6 +39,8 @@ function reviver(key, value) {
 
 		if (type == 'function') {
 			result = eval('(' + data + ')');
+		} else if (type == 'reference') {
+			result = references.get(data);
 		}
 
 		return result;
@@ -51,8 +53,8 @@ function reviver(key, value) {
  * Parse the given JSON string
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    2021.03.21
- * @version  2021.03.21
+ * @since    0.1.1
+ * @version  0.1.1
  *
  * @param    {String}   str
  *
