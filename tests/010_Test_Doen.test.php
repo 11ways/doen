@@ -89,6 +89,14 @@ class Test_Doen extends DoenTestCase {
 		$this->assertSame('boolean', $bool_type);
 		$this->assertSame('number', $number_type);
 
+		$object = $doen->evaluateToRef('({a: 1})');
+		$object_type = $this->waitForPromise($object);
+		$this->assertSame('Object', $object_type);
+
+		$array = $doen->evaluateToRef('[1, 2]');
+		$array_type = $this->waitForPromise($array);
+		$this->assertSame('Array', $array_type);
+
 		$deferred = new Deferred();
 
 		$bool->getValue(function($val) use ($deferred) {
@@ -98,6 +106,20 @@ class Test_Doen extends DoenTestCase {
 		$result = $this->waitForPromise($deferred->promise());
 
 		$this->assertSame(false, $result);
+	}
+
+	public function test_function_variables() {
+
+		$doen = $this->getDoenInstance();
+
+		$args = [
+			\Elevenways\Doen\JsFunction::create('val => 1'),
+		];
+
+		$result = $doen->evaluateFunction('function(fnc) {return typeof fnc}', $args);
+		$result = $this->waitForPromise($result);
+
+		$this->assertSame('function', $result);
 	}
 
 	public function test_long_output() {

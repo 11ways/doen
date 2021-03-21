@@ -148,7 +148,7 @@ $ref->getValue(function($result) {
 #### then(callable $on_fulfilled = null, callable $on_rejected = null) ⇒ `\React\Promise\Promise`
 
 Execute the callables when this reference resolves.
-It will **not** resolve to its value, but to its type!
+It will **not** resolve to its value, but to its type for primitives and to its class for objects.
 
 ```php
 $ref = $doen->evaluateToRef('1 + 1');
@@ -156,6 +156,26 @@ $ref->then(function($type) {
     // Outputs: "number"
     echo $type;
 });
+
+$array = $doen->evaluateToRef('[]');
+$ref->then(function($type) {
+    // Outputs: "Array"
+    echo $type;
+});
+```
+
+#### __monkeyPatch($method_name, Closure $fnc) ⇒ `void`
+
+Add a method to this instance on-the-fly
+
+```php
+$ref = $doen->evaluateToRef('1 + 1');
+$ref->__monkeyPatch('weird', function() {
+    return 'weird';
+});
+
+// Returns "weird"
+$ref->weird();
 ```
 
 

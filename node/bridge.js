@@ -17,6 +17,58 @@ const rl = readline.createInterface({
 	input: process.stdin
 });
 
+/**
+ * Reviver function used when parsing JSON strings from PHP
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    2021.03.21
+ * @version  2021.03.21
+ *
+ * @param    {String}   key
+ * @param    {*}        value
+ *
+ * @return   {*}
+ */
+function reviver(key, value) {
+
+	if (value && typeof value == 'object' && value['#'] === 'Doen') {
+
+		let result,
+		    type = value['#type'],
+		    data = value['#data'];
+
+		if (type == 'function') {
+			result = eval('(' + data + ')');
+		}
+
+		return result;
+	}
+
+	return value;
+}
+
+/**
+ * Parse the given JSON string
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    2021.03.21
+ * @version  2021.03.21
+ *
+ * @param    {String}   str
+ *
+ * @return   {*}
+ */
+function parse(str) {
+
+	let result;
+
+	str = '{"__root": ' + str + '}';
+
+	result = JSON.parse(str, reviver);
+
+	return result.__root;
+}
+
 rl.on('line', async (data) => {
 
 	let result,
@@ -24,7 +76,7 @@ rl.on('line', async (data) => {
 	    done = false,
 	    code;
 
-	data = JSON.parse(data);
+	data = parse(data);
 
 	if (data.reference != null) {
 
@@ -95,8 +147,14 @@ rl.on('line', async (data) => {
 		references.set(data.id, result);
 		let type = typeof result;
 
-		if (!result && type == 'object') {
-			type = 'null';
+		if (type == 'object') {
+			if (!result) {
+				type = 'null';
+			} else {
+				if (result.constructor) {
+					type = result.constructor.name;
+				}
+			}
 		}
 
 		result = type;
