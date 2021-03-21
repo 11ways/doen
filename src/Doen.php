@@ -107,7 +107,7 @@ class Doen {
 	 *
 	 * @author   Jelle De Loecker   <jelle@elevenways.be>
 	 * @since    0.1.0
-	 * @version  0.1.0
+	 * @version  0.1.1
 	 *
 	 * @param    string   $code
 	 *
@@ -128,9 +128,7 @@ class Doen {
 			'id'   => $id,
 		];
 
-		$packet = json_encode($packet);
-
-		$this->process->stdin->write($packet . "\n");
+		$this->sendPacket($packet);
 
 		return $deferred->promise();
 	}
@@ -140,7 +138,7 @@ class Doen {
 	 *
 	 * @author   Jelle De Loecker   <jelle@elevenways.be>
 	 * @since    0.1.0
-	 * @version  0.1.0
+	 * @version  0.1.1
 	 *
 	 * @param    string   $function
 	 * @param    array    $args
@@ -163,9 +161,7 @@ class Doen {
 			'id'       => $id,
 		];
 
-		$packet = json_encode($packet);
-
-		$this->process->stdin->write($packet . "\n");
+		$this->sendPacket($packet);
 
 		return $deferred->promise();
 	}
@@ -175,7 +171,7 @@ class Doen {
 	 *
 	 * @author   Jelle De Loecker   <jelle@elevenways.be>
 	 * @since    0.1.0
-	 * @version  0.1.0
+	 * @version  0.1.1
 	 *
 	 * @param    string   $code
 	 * @param    array    $args
@@ -205,9 +201,7 @@ class Doen {
 			'id'        => $new_id,
 		];
 
-		$packet = json_encode($packet);
-
-		$this->process->stdin->write($packet . "\n");
+		$this->sendPacket($packet);
 
 		$ref = new Reference($this, $new_id);
 
@@ -219,7 +213,7 @@ class Doen {
 	 *
 	 * @author   Jelle De Loecker   <jelle@elevenways.be>
 	 * @since    0.1.0
-	 * @version  0.1.0
+	 * @version  0.1.1
 	 *
 	 * @param    integer  $ref_id
 	 *
@@ -244,9 +238,7 @@ class Doen {
 				'id'        => $new_id,
 			];
 
-			$packet = json_encode($packet);
-
-			$this->process->stdin->write($packet . "\n");
+			$this->sendPacket($packet);
 		});
 
 		return $deferred->promise();
@@ -309,7 +301,7 @@ class Doen {
 	 *
 	 * @author   Jelle De Loecker   <jelle@elevenways.be>
 	 * @since    0.1.0
-	 * @version  0.1.0
+	 * @version  0.1.1
 	 *
 	 * @param    integer  $ref_id
 	 * @param    string   $method
@@ -332,8 +324,6 @@ class Doen {
 			'id'        => $new_id,
 		];
 
-		$packet = json_encode($packet);
-
 		$this->afterResponse($ref_id, function($err, $res) use ($packet, $deferred, $ref_id, $new_id, $method) {
 
 			if ($err) {
@@ -341,7 +331,7 @@ class Doen {
 				return;
 			}
 
-			$this->process->stdin->write($packet . "\n");
+			$this->sendPacket($packet);
 		});
 
 		$ref = new Reference($this, $new_id);
@@ -354,7 +344,7 @@ class Doen {
 	 *
 	 * @author   Jelle De Loecker   <jelle@elevenways.be>
 	 * @since    0.1.0
-	 * @version  0.1.0
+	 * @version  0.1.1
 	 *
 	 * @param    integer  $ref_id
 	 */
@@ -373,9 +363,7 @@ class Doen {
 				'destroy'   => true,
 			];
 
-			$packet = json_encode($packet);
-
-			$this->process->stdin->write($packet . "\n");
+			$this->sendPacket($packet);
 		});
 	}
 
@@ -407,6 +395,20 @@ class Doen {
 	 */
 	public function getNonsense() {
 		return $this->nonsense;
+	}
+
+	/**
+	 * Send data to the node script
+	 *
+	 * @author   Jelle De Loecker   <jelle@elevenways.be>
+	 * @since    0.1.1
+	 * @version  0.1.1
+	 *
+	 * @param    object   $packet
+	 */
+	private function sendPacket($packet) {
+		$str = json_encode($packet);
+		$this->process->stdin->write($str . "\n");
 	}
 
 	/**
