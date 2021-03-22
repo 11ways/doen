@@ -43,7 +43,7 @@ class Reference implements \React\Promise\PromiseInterface, \JsonSerializable {
 			return $this->monkey_patches[$name](...$arguments);
 		}
 
-		return $this->bridge->callRefMethod($this->id, $name, $arguments);
+		return $this->__callMethod($name, $arguments);
 	}
 
 	/**
@@ -168,6 +168,22 @@ class Reference implements \React\Promise\PromiseInterface, \JsonSerializable {
 	 */
 	public function __getRefId() {
 		return $this->id;
+	}
+
+	/**
+	 * Call a method on the node side
+	 *
+	 * @author   Jelle De Loecker   <jelle@elevenways.be>
+	 * @since    0.1.1
+	 * @version  0.1.1
+	 *
+	 * @param    string   $name
+	 * @param    array    $args
+	 *
+	 * @return   \Elevenways\Doen\Reference
+	 */
+	public function __callMethod($name, $args) {
+		return $this->bridge->callRefMethod($this->id, $name, $args);
 	}
 
 	/**

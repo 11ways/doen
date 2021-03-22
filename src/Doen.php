@@ -350,6 +350,10 @@ class Doen {
 	 */
 	public function destroyRef($ref_id) {
 
+		if ($this->ended) {
+			return;
+		}
+
 		$this->afterResponse($ref_id, function($err, $res) use ($ref_id) {
 
 			unset($this->requests[$ref_id]);
