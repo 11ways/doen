@@ -340,6 +340,49 @@ class Doen {
 	}
 
 	/**
+	 * Get a property
+	 *
+	 * @author   Jelle De Loecker   <jelle@elevenways.be>
+	 * @since    0.1.2
+	 * @version  0.1.2
+	 *
+	 * @param    integer  $ref_id
+	 * @param    string   $name
+	 *
+	 * @return   Elevenways\Doen\Reference
+	 */
+	public function getRefProperty($ref_id, $name) {
+
+		$new_id = $this->id_counter++;
+
+		$deferred = new Deferred();
+
+		$this->requests[$new_id] = $deferred;
+
+		$packet = [
+			'reference' => $ref_id,
+			'property'  => $name,
+			'id'        => $new_id,
+		];
+
+		$this->afterResponse($ref_id, function($err, $res) use ($packet, $deferred, $ref_id, $new_id, $name) {
+
+			if ($err) {
+				$deferred->reject($err);
+				return;
+			}
+
+			$this->sendPacket($packet);
+		});
+
+		$ref = new Reference($this, $new_id);
+
+		return $ref;
+	}
+
+	
+
+	/**
 	 * Destroy a reference
 	 *
 	 * @author   Jelle De Loecker   <jelle@elevenways.be>

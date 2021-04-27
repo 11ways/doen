@@ -76,6 +76,18 @@ class Test_Doen extends DoenTestCase {
 		$this->assertSame('string', $value);
 	}
 
+	public function test_reference_properties() {
+
+		$doen = $this->getDoenInstance();
+
+		$obj = $doen->evaluateToRef('({a: {b: 1}})');
+		$a = $obj->a;
+		$b = $a->b;
+
+		$value = $this->waitForPromise($b->getValue());
+		$this->assertSame(1, $value);
+	}
+
 	public function test_reference_types() {
 
 		$doen = $this->getDoenInstance();

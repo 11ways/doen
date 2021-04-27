@@ -47,6 +47,23 @@ class Reference implements \React\Promise\PromiseInterface, \JsonSerializable {
 	}
 
 	/**
+	 * Magic method intercepter:
+	 * automatically get a property from the JavaScript side
+	 * and return it as a reference
+	 *
+	 * @author   Jelle De Loecker   <jelle@elevenways.be>
+	 * @since    0.1.0
+	 * @version  0.1.0
+	 *
+	 * @param    string   $name
+	 *
+	 * @return   Elevenways\Doen\Reference
+	 */
+	public function __get($name) {
+		return $this->__getProperty($name);
+	}
+
+	/**
 	 * Returns data to use when being serialized by `json_encode()`
 	 *
 	 * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -184,6 +201,21 @@ class Reference implements \React\Promise\PromiseInterface, \JsonSerializable {
 	 */
 	public function __callMethod($name, $args) {
 		return $this->bridge->callRefMethod($this->id, $name, $args);
+	}
+
+	/**
+	 * Get a property from the node side
+	 *
+	 * @author   Jelle De Loecker   <jelle@elevenways.be>
+	 * @since    0.1.2
+	 * @version  0.1.2
+	 *
+	 * @param    string   $name
+	 *
+	 * @return   \Elevenways\Doen\Reference
+	 */
+	public function __getProperty($name) {
+		return $this->bridge->getRefProperty($this->id, $name);
 	}
 
 	/**

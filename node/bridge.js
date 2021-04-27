@@ -95,14 +95,26 @@ rl.on('line', async (data) => {
 		} else {
 			if (instance) {
 
-				if (!instance || !instance[data.method]) {
+				if (!instance) {
+					console.error('Instance not found');
+				}
+
+				if (data.method && !instance[data.method]) {
 					console.error('Unable to find method ' + data.method, instance);
 				}
 
-				try {
-					result = instance[data.method].apply(instance, data.args);
-				} catch (err) {
-					error = err;
+				if (data.method) {
+					try {
+						result = instance[data.method].apply(instance, data.args);
+					} catch (err) {
+						error = err;
+					}
+				} else if (data.property != null) {
+					try {
+						result = instance[data.property];
+					} catch (err) {
+						error = err;
+					}
 				}
 
 				done = true;

@@ -1,3 +1,7 @@
+## 0.1.2 (WIP)
+
+* Added `Reference->__get` magic method which will return references to the expected properties
+
 ## 0.1.1 (2021-03-22)
 
 * Added `Reference->__monkeyPatch($name, $closure)` method to add methods to a reference on-the-fly
