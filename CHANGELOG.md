@@ -1,4 +1,4 @@
-## 0.1.2 (WIP)
+## 0.1.2 (2021-08-11)
 
 * Added `Reference->__get` magic method which will return references to the expected properties
 
