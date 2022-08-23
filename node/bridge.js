@@ -54,7 +54,7 @@ function reviver(key, value) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.1.1
- * @version  0.1.1
+ * @version  0.1.3
  *
  * @param    {String}   str
  *
@@ -96,14 +96,48 @@ rl.on('line', async (data) => {
 			if (instance) {
 
 				if (!instance) {
-					console.error('Instance not found');
+					let error_message = 'Instance not found';
+
+					if (data.method) {
+						error_message += ' unable to call "' + data.method + '" method';
+					} else if (data.property) {
+						error_message += ' unable to get "' + data.property + '" property';
+					}
+
+					error = new Error(error_message);
 				}
 
-				if (data.method && !instance[data.method]) {
-					console.error('Unable to find method ' + data.method, instance);
+				if (!error && data.method && !instance[data.method]) {
+
+					let instance_class;
+
+					if (instance && instance.constructor) {
+						instance_class = instance.constructor.name;
+					} else {
+						instance_class = typeof instance;
+					}
+
+					// ElementHandle instances do not mirror all the actual element methods,
+					// so we have to call those manually
+					if (instance_class == 'ElementHandle') {
+						done = true;
+						try {
+							result = instance.evaluate(`(node, args) => {
+								let method = args.shift();
+								return node[method](...args);
+							}`);
+						} catch (err) {
+							error = err;
+						}
+					} else {
+						let error_message = 'Unable to find method "' + data.method + '" on ' + instance_class + ' instance';
+						error = new Error(error_message);
+					}
 				}
 
-				if (data.method) {
+				if (done || error) {
+					// Don't do the rest
+				} else if (data.method) {
 					try {
 						result = instance[data.method].apply(instance, data.args);
 					} catch (err) {

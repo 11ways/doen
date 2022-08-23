@@ -1,3 +1,7 @@
+## 0.1.3 (WIP)
+
+* Evaluate methods in browser that `ElementHandle` doesn't mirror
+
 ## 0.1.2 (2021-08-11)
 
 * Added `Reference->__get` magic method which will return references to the expected properties
